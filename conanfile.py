@@ -10,12 +10,31 @@ class Tracy(ConanFile):
     exports_sources = '*.cpp', '*.hpp', '*.h', 'CMakeLists.txt'
 
     settings = 'os', 'compiler', 'build_type', 'arch'
-    options = {'TRACY_ENABLE': [True, False]}
-    default_options = {'TRACY_ENABLE': True}
+    options = {
+        'TRACY_ENABLE': [True, False],
+        'TRACY_ON_DEMAND': [True, False],
+        'TRACY_NO_EXIT': [True, False],
+        'TRACY_NO_BROADCAST': [True, False],
+        'TRACY_PORT': 'ANY'
+    }
+    default_options = {
+        'TRACY_ENABLE': True,
+        'TRACY_ON_DEMAND': False,
+        'TRACY_NO_EXIT': False,
+        'TRACY_NO_BROADCAST': False,
+        'TRACY_PORT': 8086
+    }
 
     def build(self):
         cmake = CMake(self)
-        cmake.configure(defs={'TRACY_ENABLE': self.options.TRACY_ENABLE})
+        cmake.verbose = True
+        cmake.configure(defs={
+            'TRACY_ENABLE': self.options.TRACY_ENABLE,
+            'TRACY_ON_DEMAND': self.options.TRACY_ON_DEMAND,
+            'TRACY_NO_EXIT': self.options.TRACY_NO_EXIT,
+            'TRACY_NO_BROADCAST': self.options.TRACY_NO_BROADCAST,
+            'TRACY_PORT': self.options.TRACY_PORT
+        })
         cmake.build()
 
     def package(self):
@@ -33,3 +52,14 @@ class Tracy(ConanFile):
                 self.cpp_info.system_libs = ['dl', 'pthread']
 
             self.cpp_info.defines = ['TRACY_ENABLE']
+
+        if self.options.TRACY_ON_DEMAND:
+            self.cpp_info.defines.append('TRACY_ON_DEMAND')
+
+        if self.options.TRACY_NO_EXIT:
+            self.cpp_info.defines.append('TRACY_NO_EXIT')
+
+        if self.options.TRACY_NO_BROADCAST:
+            self.cpp_info.defines.append('TRACY_NO_BROADCAST')
+
+        self.cpp_info.defines.append('TRACY_PORT={}'.format(self.options.TRACY_PORT))

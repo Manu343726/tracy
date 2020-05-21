@@ -3173,6 +3173,7 @@ void View::DrawZones()
             draw->AddLine( wpos + ImVec2( 0, oldOffset + ostep - 1 ), wpos + ImVec2( w, oldOffset + ostep - 1 ), 0x33FFFFFF );
 
             const auto labelColor = crash.thread == v->id ? ( showFull ? 0xFF2222FF : 0xFF111188 ) : ( showFull ? 0xFFFFFFFF : 0xFF888888 );
+            const bool filterActive = m_messageFilter.IsActive();
 
             if( showFull )
             {
@@ -3180,6 +3181,13 @@ void View::DrawZones()
 
                 while( msgit < msgend )
                 {
+                    const auto messageText = m_worker.GetString( (*msgit)->ref );
+
+                    if(filterActive && !m_messageFilter.PassFilter(messageText))
+                    {
+                        continue;
+                    }
+
                     const auto next = std::upper_bound( msgit, v->messages.end(), (*msgit)->time + MinVisSize * nspx, [] ( const auto& lhs, const auto& rhs ) { return lhs < rhs->time; } );
                     const auto dist = std::distance( msgit, next );
 

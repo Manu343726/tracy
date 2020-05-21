@@ -3194,7 +3194,7 @@ void View::DrawZones()
                     const auto px = ( (*msgit)->time - m_vd.zvStart ) * pxns;
                     const bool isMsgHovered = hover && ImGui::IsMouseHoveringRect( wpos + ImVec2( px - (ty - to) * 0.5 - 1, oldOffset ), wpos + ImVec2( px + (ty - to) * 0.5 + 1, oldOffset + ty ) );
 
-                    unsigned int color = 0xFFDDDDDD;
+                    unsigned int color = (*msgit)->color;
                     float animOff = 0;
                     if( dist > 1 )
                     {

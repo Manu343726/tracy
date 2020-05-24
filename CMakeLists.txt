@@ -10,13 +10,11 @@ option(TRACY_NO_EXIT "Client executable does not exit until all profile data is 
 option(TRACY_NO_BROADCAST "Disable client discovery by broadcast to local network" OFF)
 
 add_library(tracy_client TracyClient.cpp)
-add_library(tracy_client_dll TracyClientDLL.cpp)
 
 macro(set_option OPTION)
     if(${OPTION})
         message(STATUS "${OPTION}: ON")
-        target_compile_definitions(tracy_client     PUBLIC ${OPTION})
-        target_compile_definitions(tracy_client_dll PUBLIC ${OPTION})
+        target_compile_definitions(tracy_client PUBLIC ${OPTION})
     else()
         message(STATUS "${OPTION}: OFF")
     endif()
@@ -32,8 +30,6 @@ if(NOT TRACY_PORT)
 endif()
 
 message(STATUS "TRACY_PORT: ${TRACY_PORT}")
-target_compile_definitions(tracy_client     PUBLIC TRACY_PORT=${TRACY_PORT})
-target_compile_definitions(tracy_client_dll PUBLIC TRACY_PORT=${TRACY_PORT})
+target_compile_definitions(tracy_client PUBLIC TRACY_PORT=${TRACY_PORT})
 
-target_include_directories(tracy_client     PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}")
-target_include_directories(tracy_client_dll PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}")
+target_include_directories(tracy_client PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}")

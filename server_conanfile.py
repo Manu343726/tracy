@@ -12,7 +12,8 @@ class TracyServer(ConanFile):
     settings = 'os', 'compiler', 'build_type', 'arch'
 
     requires = ('freetype/2.10.2',
-                'glfw/3.3.2')
+                'glfw/3.3.2',
+                'capstone/4.0.2')
 
     @property
     def build_dir(self):

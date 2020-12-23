@@ -63,24 +63,3 @@ class TracyClient(ConanFile):
             self.cpp_info.defines.append('TRACY_NO_BROADCAST')
 
         self.cpp_info.defines.append('TRACY_PORT={}'.format(self.options.TRACY_PORT))
-
-
-class TracyServer(ConanFile):
-    name = 'tracy_server'
-    version = 'master'
-    license = 'BSD'
-    description = 'A real time, nanosecond resolution, remote telemetry frame profiler for games and other applications'
-    url = 'https://bitbucket.org/Manu343726/tracy/src/master'
-
-    settings = 'os', 'compiler', 'build_type', 'arch'
-
-    def build(self):
-        autotools = AutoToolsBuildEnvironment(self)
-        autotools.configure(configure_dir='profiler/build/unix')
-        autotools.build('release')
-
-    def package(self):
-        self.copy('Tracy-*', dst='bin', keep_path=False)
-
-    def package_info(self):
-        self.env_info.PATH.append(os.path.join(self.package_folder, "bin"))

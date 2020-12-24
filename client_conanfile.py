@@ -15,14 +15,16 @@ class TracyClient(ConanFile):
         'TRACY_ON_DEMAND': [True, False],
         'TRACY_NO_EXIT': [True, False],
         'TRACY_NO_BROADCAST': [True, False],
-        'TRACY_PORT': 'ANY'
+        'TRACY_PORT': 'ANY',
+        'TRACY_USE_CONSTEXPR_VARIABLES': [True, False]
     }
     default_options = {
         'TRACY_ENABLE': True,
         'TRACY_ON_DEMAND': False,
         'TRACY_NO_EXIT': False,
         'TRACY_NO_BROADCAST': False,
-        'TRACY_PORT': 8086
+        'TRACY_PORT': 8086,
+        'TRACY_USE_CONSTEXPR_VARIABLES': True
     }
 
     def build(self):
@@ -33,7 +35,8 @@ class TracyClient(ConanFile):
             'TRACY_ON_DEMAND': self.options.TRACY_ON_DEMAND,
             'TRACY_NO_EXIT': self.options.TRACY_NO_EXIT,
             'TRACY_NO_BROADCAST': self.options.TRACY_NO_BROADCAST,
-            'TRACY_PORT': self.options.TRACY_PORT
+            'TRACY_PORT': self.options.TRACY_PORT,
+            'TRACY_USE_CONSTEXPR_VARIABLES': self.options.TRACY_USE_CONSTEXPR_VARIABLES
         })
         cmake.build()
 
@@ -63,3 +66,6 @@ class TracyClient(ConanFile):
             self.cpp_info.defines.append('TRACY_NO_BROADCAST')
 
         self.cpp_info.defines.append('TRACY_PORT={}'.format(self.options.TRACY_PORT))
+
+        if self.options.TRACY_USE_CONSTEXPR_VARIABLES:
+            self.cpp_info.defines.append('TRACY_USE_CONSTEXPR_VARIABLES')

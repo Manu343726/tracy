@@ -24,6 +24,7 @@ set_option(TRACY_ENABLE)
 set_option(TRACY_ON_DEMAND)
 set_option(TRACY_NO_EXIT)
 set_option(TRACY_NO_BROADCAST)
+set_option(TRACY_USE_CONSTEXPR_VARIABLES)
 
 if(NOT TRACY_PORT)
     set(TRACY_PORT 8086)
